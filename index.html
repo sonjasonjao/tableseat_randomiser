@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Who sits where?</title>
+		<link rel="stylesheet" href="./seats.css" />
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
+	</head>
+	<body>
+		<script src="./seats.js"></script>
+		<div class="banner">
+			<h1 class="title">Who sits where?</h1>
+			<h3 class="subtitle">Table seat randomiser</h3>
+		</div>
+		<div class="content">
+			<div class="nro-input input">
+				<label for="people-amt" class="input-label">Number of people: </label>
+				<input id="people-amt" type="number"/>
+				<button class="submit" onclick="AddField()">Give names</button>
+				<label class="submit">
+					<input id="name-mode" type="checkbox" value="default">Use running numbers</option>
+				</label>
+			</div>
+			<form class="name-input input">
+				<div class="names">
+				</div>
+			</form>
+			<div class="shape-input input">
+				<label for="shape-choice" class="input-label">Shape of table: </label>
+				<select id="shape-choice">
+					<!-- <option value="round">Round</option> -->
+					<option value="square">Rectangle with seats at each end</option>
+					<option value="rectangle">Rectangle without seats at ends</option>
+				</select>
+			</div>
+			<div class="run">
+				<button onclick="Run()">Run</button>
+			</div>
+			<div class="result-table">
+			</div>
+		</div>
+	</body>
