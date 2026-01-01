@@ -4,12 +4,16 @@
 
 .content {
 	font-family: 'Open Sans', sans serif;
-	margin-left: 30px;
+	padding-left: 30px;
+	padding-top: 15px;
+	background-color: beige;
 }
 
 .banner {
 	background-color: beige;
 	font-family: 'Open Sans', sans serif;
+	padding-left: 5px;
+	padding-top: 5px;
 }
 
 .subtitle {
@@ -60,21 +64,43 @@
 	margin-left: 10px;
 }
 
-.result-table {
+#result-table {
 	display: grid;
+	grid-template-columns: repeat(var(--width), 1fr);
+	grid-template-rows: 1fr 1fr;
 	column-gap: 0px;
 	row-gap: 0px;
 	height: 120px;
 	margin-top: 30px;
 }
 
-.chair {
-	grid-area: chair;
-	display: flex;
-	border-style: rgb(169, 120, 78);
-	border-color: rgb(169, 120, 78);
-	background-color: rgb(169, 120, 78);
+.edge-chair {
+	grid-row: span 2;
+	align-items: center;
+	width: 50px;
+}
+
+.top-chair {
+	align-items: flex-start;
+	justify-content: center;
+	padding-top: 10px;
 	width: 100px;
-	padding: 0px;
+}
+
+.bottom-chair {
+	align-items: flex-end;
+	justify-content: center;
+	padding-bottom: 10px;
+	width: 100px;
+}
+
+.chair {
+	display: flex;
+	background-color: rgb(169, 120, 78);
 	margin: 0px;
+}
+
+.error {
+	color: red;
+	display: block;
 }

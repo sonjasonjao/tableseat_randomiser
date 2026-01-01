@@ -3,9 +3,15 @@ function AddField() {
 	let namesDiv = document.querySelector(".names");
 	if (namesDiv.children.length > 0) {
 		while (namesDiv.children.length > 0)
-		namesDiv.removeChild(namesDiv.firstElementChild);
+			namesDiv.removeChild(namesDiv.firstElementChild);
 	}
-	let table = document.querySelector(".result-table");
+	if (amount <= 0 || amount > 30) {
+		let newInput = document.createElement('p');
+		newInput.innerText = "Number of people must be between 1 and 30!";
+		newInput.className = "error";
+		namesDiv.appendChild(newInput);
+	}	
+	let table = document.querySelector("#result-table");
 	if (table.children.length > 0) {
 		while (table.children.length > 0)
 		table.removeChild(table.firstElementChild);
@@ -36,8 +42,20 @@ function getDefaultPeople(amount) {
 }
 
 function Run() {
-	const mode = document.querySelector("#name-mode").checked;
+	let mode = document.querySelector("#name-mode").checked;
 	const amount = document.querySelector("#people-amt").value;
+	if (amount <= 0 || amount > 30) {
+		let table = document.querySelector("#result-table");
+		if (table.children.length > 0) {
+			while (table.children.length > 0)
+				table.removeChild(table.firstElementChild);
+		}
+		let msg = document.createElement('p');
+		msg.innerText = "Number of people must be between 1 and 30!";
+		msg.className = "error";
+		table.appendChild(msg);
+		return ;
+	}
 	let people = [];
 	if (mode == true)
 		people = getDefaultPeople(amount);
@@ -61,115 +79,60 @@ function makeTable(people) {
 	const shape = document.querySelector("#shape-choice").value;
 	let width;
 	const height = 2;
+	let table = document.querySelector("#result-table");
 	if (shape == "rectangle" || (shape == "square" && people.length % 2)) {
 		if (people.length % 2)
-			width = Math.floor(people.length / 2);
+			width = Math.floor(people.length / 2) + 1;
 		else
 			width = people.length / 2;
-		let areas = "";
-		let line = [];
-		let areaCont = "";
-		for (let j = 0; j < height; j++) {
-			line.length = 0;
-			for (let i = 0; i < width; i++)
-				line.push("chair" + (i + (j * width)));
-			if (people.length % 2)
-				line.push("chair" + (people.length - 1));
-			let	row = line.join(" ");
-			row = row.padStart(row.length + 1, "\"");
-			row = row.padEnd(row.length + 1, "\"");
-			areaCont += row;
-		}
-		areas += areaCont;
-		let table = document.querySelector(".result-table");
-		table.style.gridTemplateAreas = areas;
+		table.style.setProperty('--width', width);
 		table.style.maxWidth = (100 * width) + "px";
 		table.style.maxHeight =  (100 * height) + "px";
 		if (table.children.length > 0) {
 			while (table.children.length > 0)
 				table.removeChild(table.firstElementChild);
 		}
-		let i;
-		for (i = 0; i < people.length; i++) {
+		for (let i = 0; i < people.length; i++) {
 			let chair = document.createElement('p');
-			chair.className = "chair" + i;
-			chair.className = "chair";
 			chair.textContent = people[i];
-			chair.style.gridArea = "chair" + i;
-			if (i < width) {
-				chair.style.alignItems = "flex-start";
-				chair.style.justifyContent = "center";
-				chair.style.paddingTop = "10px";
-			}
-			else if (!(people.length % 2) || i != (people.length - 1)) {
-				chair.style.alignItems = "flex-end";
-				chair.style.justifyContent = "center";
-				chair.style.paddingBottom = "10px";
-			}
-			else {
-				chair.style.alignItems = "center";
+			if (people.length % 2 && i == (width - 1)) {
+				chair.className = "edge-chair chair";
 				chair.style.justifyContent = "right";
 				chair.style.paddingRight = "10px";
-				chair.style.width = "60px";
 			}
+			else if (i < width)
+				chair.className = "top-chair chair";
+			else
+				chair.className = "bottom-chair chair";
 			table.appendChild(chair);
 		}
 	}
 	else if (shape == "square") {
 		width = (people.length / 2) + 1;
-		let areas = "";
-		let line = [];
-		let areaCont = "";
-		for (let j = 0; j < height; j++) {
-			line.length = 0;
-			let i = 0;
-			line.push("chair0");
-			for (i = 1; i < width - 1; i++)
-				line.push("chair" + (i + (j * (people.length / 2 - 1))));
-			line.push("chair" + (people.length - 1));
-			let	row = line.join(" ");
-			row = row.padStart(row.length + 1, "\"");
-			row = row.padEnd(row.length + 1, "\"");
-			areaCont += row;
-		}
-		areas += areaCont;
-		let table = document.querySelector(".result-table");
-		table.style.gridTemplateAreas = areas;
-		table.style.maxWidth = ((100 * (width - 2)) + 120) + "px";
+		table.style.setProperty('--width', width);
+		table.style.maxWidth = ((100 * (width - 2)) + 100) + "px";
 		table.style.maxHeight =  (100 * height) + "px";
 		if (table.children.length > 0) {
 			while (table.children.length > 0)
 				table.removeChild(table.firstElementChild);
 		}
-		let i;
-		for (i = 0; i < people.length; i++) {
+		for (let i = 0; i < people.length; i++) {
 			let chair = document.createElement('p');
-			chair.className = "chair" + i;
-			chair.className = "chair";
 			chair.textContent = people[i];
-			chair.style.gridArea = "chair" + i;
 			if (i == 0) {
-				chair.style.alignItems = "center";
+				chair.className = "edge-chair chair";
 				chair.style.justifyContent = "left";
 				chair.style.paddingLeft = "10px";
-				chair.style.width = "60px";						
 			}
-			else if (i == people.length - 1) {
-				chair.style.alignItems = "center";
+			else if (i == width - 1) {
+				chair.className = "edge-chair chair";
 				chair.style.justifyContent = "right";
 				chair.style.paddingRight = "10px";
-				chair.style.width = "60px";				
 			}
-			else if (i < width - 1) {
-				chair.style.alignItems = "flex-start";
-				chair.style.justifyContent = "center";
-				chair.style.paddingTop = "10px";
-			}
-			else {
-				chair.style.alignItems = "flex-end";
-				chair.style.justifyContent = "center";
-				chair.style.paddingBottom = "10px";
-			}
+			else if (i < width - 1)
+				chair.className = "top-chair chair";
+			else
+				chair.className = "bottom-chair chair";
 			table.appendChild(chair);
 		}
 	}
