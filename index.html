@@ -17,10 +17,13 @@
 			<div class="nro-input">
 				<label for="people-amt" class="input-label">Number of people: </label>
 				<input id="people-amt" type="number"/>
-				<button class="submit" onclick="AddField()">Give names</button>
-				<label class="submit">
-					<input id="name-mode" type="checkbox" value="default">Use running numbers</option>
-				</label>
+			</div>
+			<div class="name-mode-input">
+				<input id="name-manual" name="name-mode" type="radio" value="manual">Give names</input>
+				<input id="name-default" name="name-mode" type="radio" value="default">Use running numbers</input>
+			</div>
+			<div>
+				<button class="submit" onclick="addNameFields()">Next</button>
 			</div>
 			<form class="name-input">
 				<div class="names">
@@ -35,7 +38,7 @@
 				</select>
 			</div>
 			<div class="run">
-				<button onclick="Run()">Randomise!</button>
+				<button onclick="run()">Randomise!</button>
 			</div>
 			<div id="result-table">
 			</div>

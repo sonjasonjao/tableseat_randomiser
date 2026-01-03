@@ -1,36 +1,45 @@
-function AddField() {
-	const amount = document.querySelector("#people-amt").value;
+function addSingleNameField(namesDiv) {
+	let newInput = document.createElement('input');
+	newInput.type = 'text';
+	newInput.className = 'names';
+	newInput.id = 'name' + (namesDiv.children.length - 1);
+	namesDiv.appendChild(newInput);
+}
+
+function addNameFields() {
+	let mode = document.querySelector('input[name=\"name-mode"]:checked').value;
 	let namesDiv = document.querySelector(".names");
-	if (namesDiv.children.length > 0) {
-		while (namesDiv.children.length > 0)
-			namesDiv.removeChild(namesDiv.firstElementChild);
+	let table = document.querySelector("#result-table");
+	if (mode == "default") {
+		namesDiv.innerHTML = "";
+		table.innerHTML = "";
+		document.querySelector('.shape-input').style.display = "flex";
+		document.querySelector('.run').style.display = "flex";
+		return ;
 	}
+	const amount = document.querySelector("#people-amt").value;
+	namesDiv.innerHTML = "";
 	if (amount <= 0 || amount > 30) {
 		let newInput = document.createElement('p');
 		newInput.innerText = "Number of people must be between 1 and 30!";
 		newInput.className = "error";
 		namesDiv.appendChild(newInput);
 	}	
-	let table = document.querySelector("#result-table");
-	if (table.children.length > 0) {
-		while (table.children.length > 0)
-		table.removeChild(table.firstElementChild);
-	}
-	for (let i = 0; i < amount; i++) {
-		let newInput = document.createElement('input');
-		newInput.type = 'text';
-		newInput.className = 'names';
-		newInput.id = 'name' + (namesDiv.children.length);
-		namesDiv.appendChild(newInput);
-	}
+	table.innerHTML = "";
+	let infoText = document.createElement('p');
+	infoText.className = 'names-info';
+	infoText.textContent = "Write the names below:";
+	namesDiv.appendChild(infoText);
+	for (let i = 0; i < amount; i++)
+		addSingleNameField(namesDiv);
+	document.querySelector('.shape-input').style.display = "flex";
+	document.querySelector('.run').style.display = "flex";
 }
 
 function getNamedPeople(amount) {
 	let people = [];
-	for (let i = 0; i < amount; i++) {
-		let thisround = "#name" + i;
-		people.push(document.querySelector(thisround).value);
-	}
+	for (let i = 0; i < amount; i++)
+		people.push(document.querySelector("#name" + i).value);
 	return people;
 }
 
@@ -41,15 +50,12 @@ function getDefaultPeople(amount) {
 	return people;
 }
 
-function Run() {
-	let mode = document.querySelector("#name-mode").checked;
+function run() {
+	let mode = document.querySelector('input[name=\"name-mode"]:checked').value;
 	const amount = document.querySelector("#people-amt").value;
 	if (amount <= 0 || amount > 30) {
 		let table = document.querySelector("#result-table");
-		if (table.children.length > 0) {
-			while (table.children.length > 0)
-				table.removeChild(table.firstElementChild);
-		}
+		table.innerHTML = "";
 		let msg = document.createElement('p');
 		msg.innerText = "Number of people must be between 1 and 30!";
 		msg.className = "error";
@@ -57,20 +63,19 @@ function Run() {
 		return ;
 	}
 	let people = [];
-	if (mode == true)
+	if (mode == "default")
 		people = getDefaultPeople(amount);
 	else
 		people = getNamedPeople(amount);
-	Randomiser(people);
-	mode = false;
+	randomise(people);
 }
 
-function Randomiser(people) {
+function randomise(people) {
 	for (let i = people.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
-        let temp = people[i];
+        let tmp = people[i];
         people[i] = people[j];
-        people[j] = temp;
+        people[j] = tmp;
     }
 	makeTable(people);
 }
@@ -80,6 +85,8 @@ function makeTable(people) {
 	let width;
 	const height = 2;
 	let table = document.querySelector("#result-table");
+	table.innerHTML = "";
+	table.style.maxHeight = (100 * height) + "px";
 	if (shape == "rectangle" || (shape == "square" && people.length % 2)) {
 		if (people.length % 2)
 			width = Math.floor(people.length / 2) + 1;
@@ -87,11 +94,6 @@ function makeTable(people) {
 			width = people.length / 2;
 		table.style.setProperty('--width', width);
 		table.style.maxWidth = (100 * width) + "px";
-		table.style.maxHeight =  (100 * height) + "px";
-		if (table.children.length > 0) {
-			while (table.children.length > 0)
-				table.removeChild(table.firstElementChild);
-		}
 		for (let i = 0; i < people.length; i++) {
 			let chair = document.createElement('p');
 			chair.textContent = people[i];
@@ -110,12 +112,7 @@ function makeTable(people) {
 	else if (shape == "square") {
 		width = (people.length / 2) + 1;
 		table.style.setProperty('--width', width);
-		table.style.maxWidth = ((100 * (width - 2)) + 100) + "px";
-		table.style.maxHeight =  (100 * height) + "px";
-		if (table.children.length > 0) {
-			while (table.children.length > 0)
-				table.removeChild(table.firstElementChild);
-		}
+		table.style.maxWidth = (100 * (width - 1)) + "px";
 		for (let i = 0; i < people.length; i++) {
 			let chair = document.createElement('p');
 			chair.textContent = people[i];
