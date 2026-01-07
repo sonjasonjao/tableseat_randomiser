@@ -4,10 +4,9 @@ const	nameFields = document.querySelector(".names");
 const	nameForm = document.querySelector(".name-mode-input");
 nameForm.addEventListener("change", () => {
 	const	nameMode = document.querySelector('input[name="name-mode"]:checked').value;
+	clearNameFields();
 	if (nameMode == "manual")
 		addNameFields();
-	if (nameMode == "default")
-		clearNameFields();
 });
 
 const	runButton = document.querySelector("#run");
@@ -38,8 +37,6 @@ function clearNameFields() {
 
 function addNameFields() {
 	const amount = document.querySelector("#people-amt").value;
-	nameFields.innerHTML = "";
-	table.innerHTML = "";
 	if (amount <= 0 || amount > 30) {
 		document.querySelector(".shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
@@ -131,6 +128,8 @@ function makeTable(people) {
 	else if (shape == "square") {
 		width = (people.length / 2) + 1;
 		table.style.setProperty('--width', width);
+		// const edgeWidth = ((100 / width) / 2) + "%";
+		// table.style.setProperty('--edge-width', edgeWidth);
 		table.style.maxWidth = (100 * (width - 1)) + "px";
 		for (let i = 0; i < people.length; i++) {
 			let chair = document.createElement('p');
