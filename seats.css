@@ -80,10 +80,8 @@
 }
 
 #result-table {
-	/* display: flex;
-	flex-wrap: wrap; */
 	display: grid;
-	grid-template-columns: repeat(var(--width), 1fr);
+	grid-template-columns: repeat(var(--width), 1fr); /*1 fr = one edge chair, 2 fr = one top / bottom chair*/
 	grid-template-rows: 1fr 1fr;
 	column-gap: 0px;
 	row-gap: 0px;
@@ -91,27 +89,40 @@
 	margin-top: 30px;
 }
 
-.edge-chair {
-	grid-row: span 2;
+.left-chair {
+	grid-row: 1 / span 2;
 	align-items: center;
-	width: 50px;
-	/* width: var(--edge-width); */
+	justify-content: left;
+	padding-left: 10px;
+	padding-right: 5px;
+}
+
+.right-chair {
+	grid-row: 1 / span 2;
+	align-items: center;
+	justify-content: right;
+	padding-right: 10px;
+	padding-left: 5px;
 }
 
 .top-chair {
+	grid-column: span 2;
+	grid-row: 1;
 	align-items: flex-start;
 	justify-content: center;
 	padding-top: 10px;
-	width: 100px;
-	/* width: calc(100% / var(--width)); */
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .bottom-chair {
+	grid-column: span 2;
+	grid-row: 2;
 	align-items: flex-end;
 	justify-content: center;
 	padding-bottom: 10px;
-	width: 100px;
-	/* width: calc(100% / var(--width)); */
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .chair {

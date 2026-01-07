@@ -25,6 +25,7 @@ runButton.addEventListener("click", () => {
 function addSingleNameField(nameFields) {
 	let newInput = document.createElement("input");
 	newInput.type = "text";
+	// newInput.maxLength = "40";
 	newInput.className = "names";
 	newInput.id = "name" + (nameFields.children.length - 1);
 	nameFields.appendChild(newInput);
@@ -37,7 +38,7 @@ function clearNameFields() {
 
 function addNameFields() {
 	const amount = document.querySelector("#people-amt").value;
-	if (amount <= 0 || amount > 30) {
+	if (amount <= 0) { // || amount > 30) {	// the disappearing and reappearing of run element is not working!
 		document.querySelector(".shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
 		let newInput = document.createElement('p');
@@ -69,9 +70,9 @@ function getDefaultPeople(amount) {
 }
 
 function run() {
-	let mode = document.querySelector('input[name="name-mode"]:checked').value;
+	let nameMode = document.querySelector('input[name="name-mode"]:checked').value;
 	const amount = document.querySelector("#people-amt").value;
-	if (amount <= 0 || amount > 30) {
+	if (amount <= 0) { // || amount > 30) {
 		table.innerHTML = "";
 		let msg = document.createElement('p');
 		msg.innerText = "Number of people must be between 1 and 30!";
@@ -80,71 +81,89 @@ function run() {
 		return ;
 	}
 	let people = [];
-	if (mode == "default")
+	if (nameMode == "default")
 		people = getDefaultPeople(amount);
 	else
 		people = getNamedPeople(amount);
-	randomise(people);
+	makeTable(randomise(people));
 }
 
 function randomise(people) {
 	for (let i = people.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let tmp = people[i];
-        people[i] = people[j];
-        people[j] = tmp;
-    }
-	makeTable(people);
+		let j = Math.floor(Math.random() * (i + 1));
+		let tmp = people[i];
+		people[i] = people[j];
+		people[j] = tmp;
+	}
+	return people;
+}
+
+function getMaxLength() {
+	let tableStyle = window.getComputedStyle(table);
+	let fontSize = parseFloat(tableStyle.fontSize);
+	let maxSize = parseFloat(tableStyle.width) - 2;
+	return maxSize / fontSize;
+}
+
+function getMaxNameLength(people) {
+	let longest = 0;
+	for (i = 0; i < people.length; i++)
+	{
+		if (people[i].length > longest)
+			longest = people[i].length;
+	}
+	return (longest < 7 ? (longest + 5) : longest);
 }
 
 function makeTable(people) {
-	const shape = document.querySelector("#shape-choice").value;
-	let width;
-	const height = 2;
+	const	tableShape = document.querySelector("#shape-choice").value;
+	const	pageContent = window.getComputedStyle(document.querySelector(".content"));
+	const	chairSize = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
+	let		rowWidth, maxWidth;
+	const	height = 2;
 	table.innerHTML = "";
 	table.style.maxHeight = (100 * height) + "px";
-	if (shape == "rectangle" || (shape == "square" && people.length % 2)) {
-		if (people.length % 2)
-			width = Math.floor(people.length / 2) + 1;
-		else
-			width = people.length / 2;
-		table.style.setProperty('--width', width);
-		table.style.maxWidth = (100 * width) + "px";
+	if (tableShape == "rectangle" || (tableShape == "square" && people.length % 2)) {
+		if (people.length % 2) {	// odd number of people will always have an edge chair on the right side
+			rowWidth = Math.floor(people.length / 2) + 1;
+			maxWidth = ((rowWidth - 1) * chairSize) + (chairSize / 2);
+			table.style.setProperty('--width', people.length);
+		}
+		else {	// even number of people at a rectangular table
+			rowWidth = people.length / 2;
+			maxWidth = rowWidth * chairSize;
+			table.style.setProperty('--width', rowWidth * 2);
+		}
+		table.style.maxWidth = maxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
-			let chair = document.createElement('p');
+			let	chair = document.createElement('p');
+			if (people[i].length > getMaxLength())
+				people[i] = people[i].substring(0, getMaxLength() - 3) + "...";
 			chair.textContent = people[i];
-			if (people.length % 2 && i == (width - 1)) {
-				chair.className = "edge-chair chair";
-				chair.style.justifyContent = "right";
-				chair.style.paddingRight = "10px";
-			}
-			else if (i < width)
+			if (people.length % 2 && i == (rowWidth - 1))
+				chair.className = "right-chair chair";
+			else if (i < rowWidth)
 				chair.className = "top-chair chair";
 			else
 				chair.className = "bottom-chair chair";
 			table.appendChild(chair);
 		}
 	}
-	else if (shape == "square") {
-		width = (people.length / 2) + 1;
-		table.style.setProperty('--width', width);
-		// const edgeWidth = ((100 / width) / 2) + "%";
-		// table.style.setProperty('--edge-width', edgeWidth);
-		table.style.maxWidth = (100 * (width - 1)) + "px";
+	else if (tableShape == "square") {	// even number of people at a round / square table
+		rowWidth = (people.length / 2) + 1;
+		table.style.setProperty('--width', people.length);
+		maxWidth = (rowWidth - 1) * chairSize;
+		table.style.maxWidth = maxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
-			let chair = document.createElement('p');
+			let	chair = document.createElement('p');
+			if (people[i].length > getMaxLength())
+				people[i] = people[i].substring(0, getMaxLength() - 3) + "...";
 			chair.textContent = people[i];
-			if (i == 0) {
-				chair.className = "edge-chair chair";
-				chair.style.justifyContent = "left";
-				chair.style.paddingLeft = "10px";
-			}
-			else if (i == width - 1) {
-				chair.className = "edge-chair chair";
-				chair.style.justifyContent = "right";
-				chair.style.paddingRight = "10px";
-			}
-			else if (i < width - 1)
+			if (i == 0)
+				chair.className = "left-chair chair";
+			else if (i == rowWidth - 1)
+				chair.className = "right-chair chair";
+			else if (i < rowWidth - 1)
 				chair.className = "top-chair chair";
 			else
 				chair.className = "bottom-chair chair";
