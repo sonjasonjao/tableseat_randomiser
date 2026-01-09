@@ -42,7 +42,7 @@ runButton.addEventListener("click", () => {
 function addSingleNameField(nameFields) {
 	let	newInput = document.createElement("input");
 	newInput.type = "text";
-	// newInput.maxLength = "40";
+	newInput.maxLength = "100";
 	newInput.className = "names";
 	newInput.id = "name" + (nameFields.children.length - 1);
 	nameFields.appendChild(newInput);
@@ -65,8 +65,12 @@ function addNameFields() {
 
 function getNamedPeople(amount) {
 	let	people = [];
-	for (let i = 0; i < amount; i++)
-		people.push(document.querySelector("#name" + i).value);
+	for (let i = 0; i < amount; i++) {
+		let	person = document.querySelector("#name" + i).value;
+		if (person.length > 30)
+			person = person.substring(0, 27) + "...";
+		people.push(person);
+	}
 	return people;
 }
 
@@ -109,7 +113,7 @@ function randomise(people) {
 function getMaxLength() {
 	let	tableStyle = window.getComputedStyle(table);
 	let	fontSize = parseFloat(tableStyle.fontSize);
-	let	maxSize = parseFloat(tableStyle.width) - 2;
+	let	maxSize = parseFloat(tableStyle.maxWidth) - 2;
 	return maxSize / fontSize;
 }
 
