@@ -1,5 +1,5 @@
-const	table = document.querySelector("#result-table");
-const	realTable = document.querySelector(".scroll-container");
+const	tableWrapper = document.querySelector("#table-wrapper");
+const	tableCont = document.querySelector(".scroll-container");
 const	nameFields = document.querySelector(".names");
 
 const	nameForm = document.querySelector(".name-mode-input");
@@ -10,10 +10,8 @@ nameForm.addEventListener("change", () => {
 	if (amount <= 0) {
 		document.querySelector(".shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
-		let	newInput = document.createElement('p');
-		newInput.innerText = "Number of people must be between 1 and 30!";
-		newInput.className = "error";
-		nameFields.appendChild(newInput);
+		makeErrorText(nameFields, 
+			"Number of people must be greater than 0!");
 	}
 	else if (nameMode == "manual") {
 		document.querySelector(".shape-input").style.display = "flex";
@@ -31,13 +29,18 @@ runButton.addEventListener("click", () => {
 	if (document.querySelector('input[name="name-mode"]:checked') != null)
 		run();
 	else {
-		realTable.innerHTML = "";
-		let	msg = document.createElement('p');
-		msg.innerText = "Please give names or choose to use running numbers!";
-		msg.className = "error";
-		realTable.appendChild(msg);
+		tableCont.innerHTML = "";
+		makeErrorText(tableCont,
+			"Please give names or choose to use running numbers!");
 	}
 });
+
+function makeErrorText(cont, text) {
+	let	newInput = document.createElement('p');
+	newInput.innerText = text;
+	newInput.className = "error";
+	cont.appendChild(newInput);
+}
 
 function addSingleNameField(nameFields) {
 	let	newInput = document.createElement("input");
@@ -50,7 +53,7 @@ function addSingleNameField(nameFields) {
 
 function clearNameFields() {
 	nameFields.innerHTML = "";
-	realTable.innerHTML = "";
+	tableCont.innerHTML = "";
 }
 
 function addNameFields() {
@@ -85,11 +88,9 @@ function run() {
 	let		nameMode = document.querySelector('input[name="name-mode"]:checked').value;
 	const	amount = document.querySelector("#people-amt").value;
 	if (amount <= 0) {
-		realTable.innerHTML = "";
-		let	msg = document.createElement('p');
-		msg.innerText = "Number of people must be between 1 and 30!";
-		msg.className = "error";
-		realTable.appendChild(msg);
+		tableCont.innerHTML = "";
+		makeErrorText(tableCont,
+			"Number of people must be greater than 0!");
 		return ;
 	}
 	let	people = [];
@@ -110,13 +111,6 @@ function randomise(people) {
 	return people;
 }
 
-function getMaxLength() {
-	let	tableStyle = window.getComputedStyle(table);
-	let	fontSize = parseFloat(tableStyle.fontSize);
-	let	maxSize = parseFloat(tableStyle.maxWidth) - 2;
-	return maxSize / fontSize;
-}
-
 function getMaxNameLength(people) {
 	let	longest = 0;
 	for (i = 0; i < people.length; i++)
@@ -130,54 +124,50 @@ function getMaxNameLength(people) {
 function makeTable(people) {
 	const	tableShape = document.querySelector("#shape-choice").value;
 	const	pageContent = window.getComputedStyle(document.querySelector(".content"));
-	const	chairSize = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
-	let		rowWidth, maxWidth;
-	realTable.innerHTML = "";
+	const	chairPxWidth = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
+	let		chairsPerRow, maxTablePxWidth;
+	tableCont.innerHTML = "";
 	if (tableShape == "rectangle" || (tableShape == "square" && people.length % 2)) {
 		if (people.length % 2) {	// odd number of people will always have an edge chair on the right side
-			rowWidth = Math.floor(people.length / 2) + 1;
-			maxWidth = ((rowWidth - 1) * chairSize) + (chairSize / 2);
-			table.style.setProperty('--width', people.length);
+			chairsPerRow = Math.floor(people.length / 2) + 1;
+			maxTablePxWidth = ((chairsPerRow - 1) * chairPxWidth) + (chairPxWidth / 2);
+			tableWrapper.style.setProperty('--width', people.length);
 		}
 		else {	// even number of people at a rectangular table
-			rowWidth = people.length / 2;
-			maxWidth = rowWidth * chairSize;
-			table.style.setProperty('--width', rowWidth * 2);
+			chairsPerRow = people.length / 2;
+			maxTablePxWidth = chairsPerRow * chairPxWidth;
+			tableWrapper.style.setProperty('--width', chairsPerRow * 2);
 		}
-		table.style.maxWidth = maxWidth + "px";
+		tableWrapper.style.maxWidth = maxTablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
 			let	chair = document.createElement('p');
-			if (people[i].length > getMaxLength())
-				people[i] = people[i].substring(0, getMaxLength() - 3) + "...";
 			chair.textContent = people[i];
-			if (people.length % 2 && i == (rowWidth - 1))
+			if (people.length % 2 && i == (chairsPerRow - 1))
 				chair.className = "right-chair chair";
-			else if (i < rowWidth)
+			else if (i < chairsPerRow)
 				chair.className = "top-chair chair";
 			else
 				chair.className = "bottom-chair chair";
-			realTable.appendChild(chair);
+			tableCont.appendChild(chair);
 		}
 	}
-	else if (tableShape == "square") {	// even number of people at a round / square table
-		rowWidth = (people.length / 2) + 1;
-		table.style.setProperty('--width', people.length);
-		maxWidth = (rowWidth - 1) * chairSize;
-		table.style.maxWidth = maxWidth + "px";
+	else if (tableShape == "square") {	// even number of people at a square table
+		chairsPerRow = (people.length / 2) + 1;
+		tableWrapper.style.setProperty('--width', people.length);
+		maxTablePxWidth = (chairsPerRow - 1) * chairPxWidth;
+		tableWrapper.style.maxWidth = maxTablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
 			let	chair = document.createElement('p');
-			if (people[i].length > getMaxLength())
-				people[i] = people[i].substring(0, getMaxLength() - 3) + "...";
 			chair.textContent = people[i];
 			if (i == 0)
 				chair.className = "left-chair chair";
-			else if (i == rowWidth - 1)
+			else if (i == chairsPerRow - 1)
 				chair.className = "right-chair chair";
-			else if (i < rowWidth - 1)
+			else if (i < chairsPerRow - 1)
 				chair.className = "top-chair chair";
 			else
 				chair.className = "bottom-chair chair";
-			realTable.appendChild(chair);
+			tableCont.appendChild(chair);
 		}
 	}
 }
