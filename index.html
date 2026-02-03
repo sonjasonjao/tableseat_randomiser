@@ -4,22 +4,22 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Who sits where? 🪑</title>
-		<link rel="stylesheet" href="./seats.css" />
+		<link rel="stylesheet" href="./seats.css"/>
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
 	</head>
 	<body>
-		<div id="wrapper">
-			<div id="main">
-				<div class="banner">
-					<h1 class="title">Who sits where? 🪑</h1>
-					<h3 class="subtitle">Table seat randomiser</h3>
-				</div>
-				<div class="content">
+		<main>
+			<div class="banner">
+				<h1 class="title">Who sits where? 🪑</h1>
+				<p class="subtitle">Table seat randomiser</p>
+			</div>
+			<div class="content js-content">
+				<form id="user-input">
 					<div class="amt-input input-line">
 						<label for="people-amt" class="input-label">Number of people: </label>
-						<input id="people-amt" type="number" max="500"/>
+						<input name="people-amt" id="people-amt" type="number" max="500"/>
 					</div>
-					<form class="name-mode-input input-line">
+					<fieldset class="name-mode-input input-line">
 						<div class="radio-unit">
 							<input type="radio" id="manual" name="name-mode" value="manual">
 							<label for="manual" class="name-mode-choice">Give names</label>
@@ -28,25 +28,25 @@
 							<input type="radio" id="default" name="name-mode" value="default">
 							<label for="default" class="name-mode-choice">Use running numbers</label>
 						</div>
-					</form>
-					<form class="name-input">
-						<div class="names">
+					</fieldset>
+					<div class="name-input">
+						<div class="names js-names">
 						</div>
-					</form>
-					<div class="shape-input input-line">
+					</div>
+					<div class="shape-input js-shape-input input-line">
 						<label for="shape-choice" class="input-label">Type of table: </label>
-						<select id="shape-choice">
-							<option value="square">Rectangle with seats at each end</option>
-							<option value="rectangle">Rectangle without seats at ends</option>
+						<select id="shape-choice" name="shape-choice">
+							<option class="shape-option" value="square">Rectangle with seats at each end</option>
+							<option class="shape-option" value="rectangle">Rectangle without seats at ends</option>
 						</select>
 					</div>
 					<div>
-						<button id="run">Randomise!</button>
+						<button id="run" type="submit">Randomise!</button>
 					</div>
-					<div id="table-wrapper">
-						<div class="grid-item">
-							<div class="scroll-container">
-							</div>
+				</form>
+				<div id="table-wrapper">
+					<div class="grid-item">
+						<div class="scroll-container">
 						</div>
 					</div>
 				</div>
@@ -56,3 +56,4 @@
 		</div>
 		<script src="./seats.js"></script>
 	</body>
+</html>

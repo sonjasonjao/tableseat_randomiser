@@ -1,32 +1,37 @@
 const	tableWrapper = document.querySelector("#table-wrapper");
 const	tableCont = document.querySelector(".scroll-container");
-const	nameFields = document.querySelector(".names");
+const	nameFields = document.querySelector(".js-names");
+const	form = document.querySelector("#user-input");
+let		data;
 
 const	nameForm = document.querySelector(".name-mode-input");
 nameForm.addEventListener("change", () => {
-	const	nameMode = document.querySelector('input[name="name-mode"]:checked').value;
+	data = new FormData(form);
+	const nameMode = data.get("name-mode");
 	clearNameFields();
-	const	amount = document.querySelector("#people-amt").value;
+	const	amount = data.get("people-amt");
 	if (amount <= 0) {
-		document.querySelector(".shape-input").style.display = "none";
+		document.querySelector(".js-shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
 		makeErrorText(nameFields, 
 			"Number of people must be greater than 0!");
 	}
 	else if (nameMode == "manual") {
-		document.querySelector(".shape-input").style.display = "flex";
+		document.querySelector(".js-shape-input").style.display = "flex";
 		document.querySelector("#run").style.display = "flex";
 		addNameFields();
 	}
 	else if (nameMode == "default") {
-		document.querySelector(".shape-input").style.display = "flex";
+		document.querySelector(".js-shape-input").style.display = "flex";
 		document.querySelector("#run").style.display = "flex";
 	}
 });
 
 const	runButton = document.querySelector("#run");
-runButton.addEventListener("click", () => {
-	if (document.querySelector('input[name="name-mode"]:checked') != null)
+runButton.addEventListener("click", function(event) {
+	event.preventDefault();
+	data = new FormData(form);
+	if (data.get("name-mode") != null)
 		run();
 	else {
 		tableCont.innerHTML = "";
@@ -46,7 +51,7 @@ function addSingleNameField(nameFields) {
 	let	newInput = document.createElement("input");
 	newInput.type = "text";
 	newInput.maxLength = "100";
-	newInput.className = "names";
+	newInput.name = "name" + (nameFields.children.length - 1);
 	newInput.id = "name" + (nameFields.children.length - 1);
 	nameFields.appendChild(newInput);
 }
@@ -57,9 +62,8 @@ function clearNameFields() {
 }
 
 function addNameFields() {
-	const	amount = document.querySelector("#people-amt").value;
+	const 	amount = data.get("people-amt");
 	let		infoText = document.createElement('p');
-	infoText.className = "names-info";
 	infoText.textContent = "Write the names below:";
 	nameFields.appendChild(infoText);
 	for (let i = 0; i < amount; i++)
@@ -69,7 +73,7 @@ function addNameFields() {
 function getNamedPeople(amount) {
 	let	people = [];
 	for (let i = 0; i < amount; i++) {
-		let	person = document.querySelector("#name" + i).value;
+		let	person = data.get("name" + i);
 		if (person.length > 30)
 			person = person.substring(0, 27) + "...";
 		people.push(person);
@@ -85,8 +89,9 @@ function getDefaultPeople(amount) {
 }
 
 function run() {
-	let		nameMode = document.querySelector('input[name="name-mode"]:checked').value;
-	const	amount = document.querySelector("#people-amt").value;
+	data = new FormData(form);
+	const	nameMode = data.get("name-mode");
+	const	amount = data.get("people-amt");
 	if (amount <= 0) {
 		tableCont.innerHTML = "";
 		makeErrorText(tableCont,
@@ -122,8 +127,8 @@ function getMaxNameLength(people) {
 }
 
 function makeTable(people) {
-	const	tableShape = document.querySelector("#shape-choice").value;
-	const	pageContent = window.getComputedStyle(document.querySelector(".content"));
+	const	tableShape = data.get("shape-choice");
+	const	pageContent = window.getComputedStyle(document.querySelector(".js-content"));
 	const	chairPxWidth = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
 	let		chairsPerRow, maxTablePxWidth;
 	tableCont.innerHTML = "";
