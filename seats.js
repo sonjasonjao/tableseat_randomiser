@@ -13,7 +13,7 @@ nameForm.addEventListener("change", () => {
 	if (amount <= 0) {
 		document.querySelector(".js-shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
-		makeErrorText(nameFields, 
+		makeErrorText(nameFields,
 			"Number of people must be greater than 0!");
 	}
 	else if (nameMode == "manual") {
@@ -129,20 +129,20 @@ function makeTable(people) {
 	const	tableShape = data.get("shape-choice");
 	const	pageContent = window.getComputedStyle(document.querySelector(".js-content"));
 	const	chairPxWidth = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
-	let		chairsPerRow, maxTablePxWidth;
+	let		chairsPerRow, tablePxWidth;
 	tableGrid.innerHTML = "";
 	if (tableShape == "rectangle" || (tableShape == "square" && people.length % 2)) {
 		if (people.length % 2) {	// odd number of people will always have an edge chair on the right side
 			chairsPerRow = Math.floor(people.length / 2) + 1;
-			maxTablePxWidth = ((chairsPerRow - 1) * chairPxWidth) + (chairPxWidth / 2);
+			tablePxWidth = ((chairsPerRow - 1) * chairPxWidth) + (chairPxWidth / 2);
 			tableGrid.style.setProperty('--width', people.length);
 		}
 		else {	// even number of people at a rectangular table
 			chairsPerRow = people.length / 2;
-			maxTablePxWidth = chairsPerRow * chairPxWidth;
+			tablePxWidth = chairsPerRow * chairPxWidth;
 			tableGrid.style.setProperty('--width', chairsPerRow * 2);
 		}
-		tableGrid.style.maxWidth = maxTablePxWidth + "px";
+		tableGrid.style.width = tablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
 			let	chair = document.createElement('p');
 			chair.textContent = people[i];
@@ -158,8 +158,8 @@ function makeTable(people) {
 	else if (tableShape == "square") {	// even number of people at a square table
 		chairsPerRow = (people.length / 2) + 1;
 		tableGrid.style.setProperty('--width', people.length);
-		maxTablePxWidth = (chairsPerRow - 1) * chairPxWidth;
-		tableGrid.style.maxWidth = maxTablePxWidth + "px";
+		tablePxWidth = (chairsPerRow - 1) * chairPxWidth;
+		tableGrid.style.width = tablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
 			let	chair = document.createElement('p');
 			chair.textContent = people[i];

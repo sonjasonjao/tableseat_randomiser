@@ -35,8 +35,8 @@ main {
 	padding: 5px;
 	font-size: 1.5em;
 	font-weight: bold;
-    margin-block-start: 0.83em;
-    margin-block-end: 0.83em;
+	margin-block-start: 0.83em;
+	margin-block-end: 0.83em;
 }
 
 .input-label {
@@ -73,7 +73,7 @@ main {
 .name-mode-choice {
 	margin-right: 15px;
 	margin-left: 5px;
-} 
+}
 
 .name-input {
 	margin-top: 25px;
@@ -116,8 +116,8 @@ main {
 	display: grid;
 	grid-template-columns: repeat(var(--width), 1fr); /* 1fr = one edge chair, 2fr = one top / bottom chair */
 	grid-template-rows: 1fr 1fr;
-	column-gap: 0px;
-	row-gap: 0px;
+	gap: 0px;
+	margin: 0px;
 	min-height: 160px;
 	max-height: 250px;
 	margin-top: 40px;
