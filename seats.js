@@ -1,4 +1,4 @@
-const	tableWrapper = document.querySelector("#table-wrapper");
+const	tableGrid = document.querySelector("#table-grid");
 const	tableCont = document.querySelector(".scroll-container");
 const	nameFields = document.querySelector(".js-names");
 const	form = document.querySelector("#user-input");
@@ -32,10 +32,10 @@ runButton.addEventListener("click", function(event) {
 	event.preventDefault();
 	data = new FormData(form);
 	if (data.get("name-mode") != null)
-		run();
+		run(data);
 	else {
-		tableCont.innerHTML = "";
-		makeErrorText(tableCont,
+		tableGrid.innerHTML = "";
+		makeErrorText(tableGrid,
 			"Please give names or choose to use running numbers!");
 	}
 });
@@ -58,7 +58,7 @@ function addSingleNameField(nameFields) {
 
 function clearNameFields() {
 	nameFields.innerHTML = "";
-	tableCont.innerHTML = "";
+	tableGrid.innerHTML = "";
 }
 
 function addNameFields() {
@@ -88,13 +88,12 @@ function getDefaultPeople(amount) {
 	return people;
 }
 
-function run() {
-	data = new FormData(form);
+function run(data) {
 	const	nameMode = data.get("name-mode");
 	const	amount = data.get("people-amt");
 	if (amount <= 0) {
-		tableCont.innerHTML = "";
-		makeErrorText(tableCont,
+		tableGrid.innerHTML = "";
+		makeErrorText(tableGrid,
 			"Number of people must be greater than 0!");
 		return ;
 	}
@@ -131,19 +130,19 @@ function makeTable(people) {
 	const	pageContent = window.getComputedStyle(document.querySelector(".js-content"));
 	const	chairPxWidth = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
 	let		chairsPerRow, maxTablePxWidth;
-	tableCont.innerHTML = "";
+	tableGrid.innerHTML = "";
 	if (tableShape == "rectangle" || (tableShape == "square" && people.length % 2)) {
 		if (people.length % 2) {	// odd number of people will always have an edge chair on the right side
 			chairsPerRow = Math.floor(people.length / 2) + 1;
 			maxTablePxWidth = ((chairsPerRow - 1) * chairPxWidth) + (chairPxWidth / 2);
-			tableWrapper.style.setProperty('--width', people.length);
+			tableGrid.style.setProperty('--width', people.length);
 		}
 		else {	// even number of people at a rectangular table
 			chairsPerRow = people.length / 2;
 			maxTablePxWidth = chairsPerRow * chairPxWidth;
-			tableWrapper.style.setProperty('--width', chairsPerRow * 2);
+			tableGrid.style.setProperty('--width', chairsPerRow * 2);
 		}
-		tableWrapper.style.maxWidth = maxTablePxWidth + "px";
+		tableGrid.style.maxWidth = maxTablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
 			let	chair = document.createElement('p');
 			chair.textContent = people[i];
@@ -153,14 +152,14 @@ function makeTable(people) {
 				chair.className = "top-chair chair";
 			else
 				chair.className = "bottom-chair chair";
-			tableCont.appendChild(chair);
+			tableGrid.appendChild(chair);
 		}
 	}
 	else if (tableShape == "square") {	// even number of people at a square table
 		chairsPerRow = (people.length / 2) + 1;
-		tableWrapper.style.setProperty('--width', people.length);
+		tableGrid.style.setProperty('--width', people.length);
 		maxTablePxWidth = (chairsPerRow - 1) * chairPxWidth;
-		tableWrapper.style.maxWidth = maxTablePxWidth + "px";
+		tableGrid.style.maxWidth = maxTablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
 			let	chair = document.createElement('p');
 			chair.textContent = people[i];
@@ -172,7 +171,7 @@ function makeTable(people) {
 				chair.className = "top-chair chair";
 			else
 				chair.className = "bottom-chair chair";
-			tableCont.appendChild(chair);
+			tableGrid.appendChild(chair);
 		}
 	}
 }
