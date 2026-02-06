@@ -1,20 +1,36 @@
-const	tableGrid = document.querySelector("#table-grid");
 const	tableCont = document.querySelector(".scroll-container");
 const	nameFields = document.querySelector(".js-names");
 const	form = document.querySelector("#user-input");
 let		data;
 
-const	nameForm = document.querySelector(".js-name-mode-input");
-nameForm.addEventListener("change", () => {
+const	peopleAmtField = document.querySelector("#people-amt");
+peopleAmtField.addEventListener("change", createNameFieldsAndSubmit);
+
+const	nameChoiceField = document.querySelector(".js-name-mode-input");
+nameChoiceField.addEventListener("change", createNameFieldsAndSubmit);
+
+const	runButton = document.querySelector("#run");
+runButton.addEventListener("click", function(event) {
+	event.preventDefault();
+	data = new FormData(form);
+	if (data.get("name-mode") != null)
+		run(data);
+	else {
+		tableCont.innerHTML = "";
+		makeErrorText(tableCont, "Please give names or choose to use running numbers!");
+	}
+});
+
+function createNameFieldsAndSubmit() {
 	data = new FormData(form);
 	const nameMode = data.get("name-mode");
 	clearNameFields();
 	const	amount = data.get("people-amt");
-	if (amount <= 0) {
+	if (amount <= 0 || amount > 500) {
 		document.querySelector(".js-shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
 		makeErrorText(nameFields,
-			"Number of people must be greater than 0!");
+			"Number of people must be between 1 and 500!");
 	}
 	else if (nameMode == "manual") {
 		document.querySelector(".js-shape-input").style.display = "flex";
@@ -25,20 +41,7 @@ nameForm.addEventListener("change", () => {
 		document.querySelector(".js-shape-input").style.display = "flex";
 		document.querySelector("#run").style.display = "flex";
 	}
-});
-
-const	runButton = document.querySelector("#run");
-runButton.addEventListener("click", function(event) {
-	event.preventDefault();
-	data = new FormData(form);
-	if (data.get("name-mode") != null)
-		run(data);
-	else {
-		tableGrid.innerHTML = "";
-		makeErrorText(tableGrid,
-			"Please give names or choose to use running numbers!");
-	}
-});
+}
 
 function makeErrorText(cont, text) {
 	let	newInput = document.createElement('p');
@@ -58,7 +61,7 @@ function addSingleNameField(nameFields) {
 
 function clearNameFields() {
 	nameFields.innerHTML = "";
-	tableGrid.innerHTML = "";
+	tableCont.innerHTML = "";
 }
 
 function addNameFields() {
@@ -91,10 +94,9 @@ function getDefaultPeople(amount) {
 function run(data) {
 	const	nameMode = data.get("name-mode");
 	const	amount = data.get("people-amt");
-	if (amount <= 0) {
-		tableGrid.innerHTML = "";
-		makeErrorText(tableGrid,
-			"Number of people must be greater than 0!");
+	if (amount <= 0 || amount > 500) {
+		tableCont.innerHTML = "";
+		makeErrorText(tableCont, "Number of people must be between 1 and 500!");
 		return ;
 	}
 	let	people = [];
@@ -102,7 +104,7 @@ function run(data) {
 		people = getDefaultPeople(amount);
 	else
 		people = getNamedPeople(amount);
-	makeTable(randomise(people));
+	buildTable(randomise(people));
 }
 
 function randomise(people) {
@@ -125,12 +127,17 @@ function getMaxNameLength(people) {
 	return (longest < 7 ? (longest + 5) : longest);
 }
 
-function makeTable(people) {
+function buildTable(people) {
 	const	tableShape = data.get("shape-choice");
 	const	pageContent = window.getComputedStyle(document.querySelector(".js-content"));
 	const	chairPxWidth = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
 	let		chairsPerRow, tablePxWidth;
-	tableGrid.innerHTML = "";
+	let		tableGrid = document.createElement("div");
+
+	tableCont.innerHTML = "";
+	tableGrid.id = "table-grid";
+	tableCont.appendChild(tableGrid);
+
 	if (tableShape == "rectangle" || (tableShape == "square" && people.length % 2)) {
 		if (people.length % 2) {	// odd number of people will always have an edge chair on the right side
 			chairsPerRow = Math.floor(people.length / 2) + 1;
