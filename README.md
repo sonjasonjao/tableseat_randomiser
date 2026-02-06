@@ -1,4 +1,4 @@
-# Who sits where? 🪑 - a tableseat randomiser
+# Who sits where? 🪑 - a table seat randomiser
 A simple web page to randomise seating for a dinner table.\
 This is my first practice project to learn the basics of front end with HTML, CSS, and JavaScript.
 <br><br>
