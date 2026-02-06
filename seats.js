@@ -1,9 +1,9 @@
-const	tableCont = document.querySelector(".scroll-container");
+const	tableCont = document.querySelector(".js-scroll-container");
 const	nameFields = document.querySelector(".js-names");
 const	form = document.querySelector("#user-input");
 let		data;
 
-const	peopleAmtField = document.querySelector("#people-amt");
+const	peopleAmtField = document.querySelector(".js-people-amt");
 peopleAmtField.addEventListener("change", createNameFieldsAndSubmit);
 
 const	nameChoiceField = document.querySelector(".js-name-mode-input");
@@ -24,27 +24,24 @@ runButton.addEventListener("click", function(event) {
 function createNameFieldsAndSubmit() {
 	data = new FormData(form);
 	const nameMode = data.get("name-mode");
-	clearNameFields();
 	const	amount = data.get("people-amt");
+	clearNameFields();
 	if (amount <= 0 || amount > 500) {
 		document.querySelector(".js-shape-input").style.display = "none";
 		document.querySelector("#run").style.display = "none";
 		makeErrorText(nameFields,
 			"Number of people must be between 1 and 500!");
 	}
-	else if (nameMode == "manual") {
+	else {
 		document.querySelector(".js-shape-input").style.display = "flex";
 		document.querySelector("#run").style.display = "flex";
-		addNameFields();
-	}
-	else if (nameMode == "default") {
-		document.querySelector(".js-shape-input").style.display = "flex";
-		document.querySelector("#run").style.display = "flex";
+		if (nameMode == "manual")
+			addNameFields();
 	}
 }
 
 function makeErrorText(cont, text) {
-	let	newInput = document.createElement('p');
+	let	newInput = document.createElement("p");
 	newInput.innerText = text;
 	newInput.className = "error";
 	cont.appendChild(newInput);
@@ -66,7 +63,7 @@ function clearNameFields() {
 
 function addNameFields() {
 	const 	amount = data.get("people-amt");
-	let		infoText = document.createElement('p');
+	let		infoText = document.createElement("p");
 	infoText.textContent = "Write the names below:";
 	nameFields.appendChild(infoText);
 	for (let i = 0; i < amount; i++)
@@ -97,7 +94,7 @@ function run(data) {
 	if (amount <= 0 || amount > 500) {
 		tableCont.innerHTML = "";
 		makeErrorText(tableCont, "Number of people must be between 1 and 500!");
-		return ;
+		return;
 	}
 	let	people = [];
 	if (nameMode == "default")
@@ -151,7 +148,7 @@ function buildTable(people) {
 		}
 		tableGrid.style.width = tablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
-			let	chair = document.createElement('p');
+			let	chair = document.createElement("p");
 			chair.textContent = people[i];
 			if (people.length % 2 && i == (chairsPerRow - 1))
 				chair.className = "right-chair chair";
@@ -168,7 +165,7 @@ function buildTable(people) {
 		tablePxWidth = (chairsPerRow - 1) * chairPxWidth;
 		tableGrid.style.width = tablePxWidth + "px";
 		for (let i = 0; i < people.length; i++) {
-			let	chair = document.createElement('p');
+			let	chair = document.createElement("p");
 			chair.textContent = people[i];
 			if (i == 0)
 				chair.className = "left-chair chair";

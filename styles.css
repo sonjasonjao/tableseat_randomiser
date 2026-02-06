@@ -59,13 +59,13 @@ main {
 	margin-bottom: 25px;
 }
 
-#people-amt {
+.people-amt {
 	margin-right: 5px;
 	max-height: 30px;
-	max-width: 100px;
+	width: 80px;
 }
 
-#people-amt:invalid {
+.people-amt:invalid {
 	color: rgb(214, 15, 15);
 }
 

@@ -17,7 +17,7 @@
 				<form id="user-input">
 					<div class="amt-input input-line">
 						<label for="people-amt" class="input-label">Number of people: </label>
-						<input name="people-amt" id="people-amt" type="number" max="500"/>
+						<input name="people-amt" class="people-amt js-people-amt" type="number" min="1" max="500"/>
 					</div>
 					<fieldset class="name-mode-input js-name-mode-input input-line">
 						<div class="radio-unit">
@@ -44,7 +44,7 @@
 						<button id="run" type="submit">Randomise!</button>
 					</div>
 				</form>
-				<div class="scroll-container">
+				<div class="scroll-container js-scroll-container">
 				</div>
 			</div>
 			<div class="footer">
