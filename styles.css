@@ -66,6 +66,10 @@ main {
 	color: rgb(214, 15, 15);
 }
 
+.name-mode-input {
+	border: none;
+}
+
 .radio-unit {
 	display: inline-flex;
 }
@@ -116,8 +120,8 @@ main {
 	display: grid;
 	grid-template-columns: repeat(var(--width), 1fr); /* 1fr = one edge chair, 2fr = one top / bottom chair */
 	grid-template-rows: 1fr 1fr;
-	gap: 0px;
-	margin: 0px;
+	gap: 0;
+	margin: 0;
 	min-height: 160px;
 	max-height: 250px;
 	margin-top: 40px;
@@ -132,7 +136,7 @@ main {
 .left-chair {
 	grid-row: 1 / span 2;
 	align-items: center;
-	justify-content: left;
+	justify-content: flex-start;
 	padding-left: 10px;
 	padding-right: 5px;
 }
@@ -140,7 +144,7 @@ main {
 .right-chair {
 	grid-row: 1 / span 2;
 	align-items: center;
-	justify-content: right;
+	justify-content: flex-end;
 	padding-right: 10px;
 	padding-left: 5px;
 }
@@ -170,7 +174,7 @@ main {
 .chair {
 	display: flex;
 	background-color: rgb(169, 120, 78);
-	margin: 0px;
+	margin: 0;
 }
 
 .error {

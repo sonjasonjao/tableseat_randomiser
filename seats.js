@@ -4,7 +4,7 @@ const	nameFields = document.querySelector(".js-names");
 const	form = document.querySelector("#user-input");
 let		data;
 
-const	nameForm = document.querySelector(".name-mode-input");
+const	nameForm = document.querySelector(".js-name-mode-input");
 nameForm.addEventListener("change", () => {
 	data = new FormData(form);
 	const nameMode = data.get("name-mode");
