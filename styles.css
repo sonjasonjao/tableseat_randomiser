@@ -2,12 +2,16 @@
 	box-sizing: border-box;
 }
 
-#wrapper {
+html {
+	height: 100%;
+}
+
+body {
 	background-color: beige;
 	height: 100%;
 }
 
-#main {
+main {
 	margin: 0 auto;
 	width: 60%;
 	height: 100%;
@@ -28,11 +32,14 @@
 	padding-top: 25px;
 	padding-bottom: 50px;
 	background-color: white;
-	height: 100%;
 }
 
 .subtitle {
 	padding: 5px;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-block-start: 0.83em;
+	margin-block-end: 0.83em;
 }
 
 .input-label {
@@ -52,10 +59,18 @@
 	margin-bottom: 25px;
 }
 
-#people-amt {
+.people-amt {
 	margin-right: 5px;
 	max-height: 30px;
-	max-width: 100px;
+	width: 80px;
+}
+
+.people-amt:invalid {
+	color: rgb(214, 15, 15);
+}
+
+.name-mode-input {
+	border: none;
 }
 
 .radio-unit {
@@ -65,7 +80,7 @@
 .name-mode-choice {
 	margin-right: 15px;
 	margin-left: 5px;
-} 
+}
 
 .name-input {
 	margin-top: 25px;
@@ -75,7 +90,7 @@
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-	gap: 7px;
+	row-gap: 7px;
 	margin-top: 5px;
 	max-width: 400px;
 }
@@ -94,7 +109,7 @@
 	font-size: medium;
 }
 
-option {
+.shape-option {
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 }
@@ -104,36 +119,27 @@ option {
 	font-size: medium;
 }
 
-#table-wrapper {
+.scroll-container {
+	overflow-x: auto;
+	overflow-y: hidden;
+	width: 100%;
+}
+
+#table-grid {
 	display: grid;
-	grid-template-columns: repeat(var(--width), 1fr); /*1 fr = one edge chair, 2 fr = one top / bottom chair*/
+	grid-template-columns: repeat(var(--width), 1fr); /* 1fr = one edge chair, 2fr = one top / bottom chair */
 	grid-template-rows: 1fr 1fr;
-	column-gap: 0px;
-	row-gap: 0px;
+	gap: 0;
+	margin: 0;
 	min-height: 160px;
 	max-height: 250px;
 	margin-top: 40px;
 }
 
-.grid-item {
-	grid-column: 1 / -1;
-	grid-row: 1 / -1;
-	height: 100%;
-	width: 100%;
-}
-
-.scroll-container {
-	display: grid;
-	overflow-x: auto;
-	overflow-y: hidden;
-	height: 100%;
-	width: 100%;
-}
-
 .left-chair {
 	grid-row: 1 / span 2;
 	align-items: center;
-	justify-content: left;
+	justify-content: flex-start;
 	padding-left: 10px;
 	padding-right: 5px;
 }
@@ -141,7 +147,7 @@ option {
 .right-chair {
 	grid-row: 1 / span 2;
 	align-items: center;
-	justify-content: right;
+	justify-content: flex-end;
 	padding-right: 10px;
 	padding-left: 5px;
 }
@@ -171,7 +177,7 @@ option {
 .chair {
 	display: flex;
 	background-color: rgb(169, 120, 78);
-	margin: 0px;
+	margin: 0;
 }
 
 .error {
