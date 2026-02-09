@@ -1,7 +1,6 @@
 const	tableCont = document.querySelector(".js-scroll-container");
 const	nameFields = document.querySelector(".js-names");
 const	form = document.querySelector("#user-input");
-let		data;
 
 const	peopleAmtField = document.querySelector(".js-people-amt");
 peopleAmtField.addEventListener("change", createNameFieldsAndSubmit);
@@ -12,9 +11,9 @@ nameChoiceField.addEventListener("change", createNameFieldsAndSubmit);
 const	runButton = document.querySelector("#run");
 runButton.addEventListener("click", function(event) {
 	event.preventDefault();
-	data = new FormData(form);
+	const	data = new FormData(form);
 	if (data.get("name-mode") != null)
-		run(data);
+		run();
 	else {
 		tableCont.innerHTML = "";
 		makeErrorText(tableCont, "Please give names or choose to use running numbers!");
@@ -22,9 +21,9 @@ runButton.addEventListener("click", function(event) {
 });
 
 function createNameFieldsAndSubmit() {
-	data = new FormData(form);
-	const nameMode = data.get("name-mode");
-	const	amount = data.get("people-amt");
+	const	data = new FormData(form);
+	const	nameMode = data.get("name-mode");
+	const	amount = Number(data.get("people-amt"));
 	clearNameFields();
 	if (amount <= 0 || amount > 500) {
 		document.querySelector(".js-shape-input").style.display = "none";
@@ -62,7 +61,8 @@ function clearNameFields() {
 }
 
 function addNameFields() {
-	const 	amount = data.get("people-amt");
+	const	data = new FormData(form);
+	const 	amount = Number(data.get("people-amt"));
 	let		infoText = document.createElement("p");
 	infoText.textContent = "Write the names below:";
 	nameFields.appendChild(infoText);
@@ -71,7 +71,8 @@ function addNameFields() {
 }
 
 function getNamedPeople(amount) {
-	let	people = [];
+	const	data = new FormData(form);
+	let		people = [];
 	for (let i = 0; i < amount; i++) {
 		let	person = data.get("name" + i);
 		if (person.length > 30)
@@ -88,9 +89,10 @@ function getDefaultPeople(amount) {
 	return people;
 }
 
-function run(data) {
+function run() {
+	const	data = new FormData(form);
 	const	nameMode = data.get("name-mode");
-	const	amount = data.get("people-amt");
+	const	amount = Number(data.get("people-amt"));
 	if (amount <= 0 || amount > 500) {
 		tableCont.innerHTML = "";
 		makeErrorText(tableCont, "Number of people must be between 1 and 500!");
@@ -125,6 +127,7 @@ function getMaxNameLength(people) {
 }
 
 function buildTable(people) {
+	const	data = new FormData(form);
 	const	tableShape = data.get("shape-choice");
 	const	pageContent = window.getComputedStyle(document.querySelector(".js-content"));
 	const	chairPxWidth = getMaxNameLength(people) * (parseFloat(pageContent.fontSize));
