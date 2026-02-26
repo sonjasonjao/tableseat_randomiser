@@ -1,9 +1,12 @@
-# Who sits where? 🪑 - a table seat randomiser
+# Who sits where? 🪑 - a table seating randomiser
 A simple web interface to randomise seating for a dinner table.\
 This is my first practice project to learn the basics of frontend with HTML, CSS, and JavaScript.
 <br><br>
 I was inspired to build this page by Tuomo Ojala's original idea of a seating randomiser application.
 <br><br>
+
+![](demo.gif)
+
 ### Features
 - Randomised seating for 1-500 people with custom names or numbered seats
 - Visual preview of seating for rectangular tables with or without seats at each end
