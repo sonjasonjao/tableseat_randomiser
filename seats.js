@@ -52,6 +52,7 @@ function addSingleNameField(nameFields) {
 	newInput.maxLength = "100";
 	newInput.name = "name" + (nameFields.children.length - 1);
 	newInput.id = "name" + (nameFields.children.length - 1);
+	newInput.placeholder = "Person " + (nameFields.children.length);
 	nameFields.appendChild(newInput);
 }
 
@@ -64,6 +65,7 @@ function addNameFields() {
 	const	data = new FormData(form);
 	const 	amount = Number(data.get("people-amt"));
 	let		infoText = document.createElement("p");
+	infoText.className = "name-input-info";
 	infoText.textContent = "Write the names below:";
 	nameFields.appendChild(infoText);
 	for (let i = 0; i < amount; i++)
